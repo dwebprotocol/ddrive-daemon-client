@@ -4,17 +4,17 @@
 > A Node client library and CLI tool for interacting with the dDrive daemon.
 
 ## ⚠️ Soft Deprecation Notice ⚠️
-__With the introduction of [`dhub`](https://github.com/org/hyperspace), this module is "soft deprecated," meaning the current compat release (v2) will likely be the last.__
+__With the introduction of [`dhub`](https://github.com/dwebprotocol/dhub), this module is "soft deprecated," meaning the current compat release (v2) will likely be the last.__
 
-__If you're a new user, it's recommended to use [`ddrive`](https://github.com/protocol/hyperdrive) directly, using a `RemoteCorestore` instance connected to dHub. Check out the dHub docs for examples.__
+__If you're a new user, it's recommended to use [`ddrive`](https://github.com/dwebprotocol/ddrive) directly, using a `RemoteBasestore` instance connected to dHub. Check out the dHub docs for examples.__
 
-__For existing users, the most recent update (v2) works with dHub, and is designed to replicate the v1 functionality with minimal breaking changes. See [`UPGRADE.md`](https://github.com/protocol/@ddrive/daemon-client/blob/master/UPGRADE.md) for more info.__
+__For existing users, the most recent update (v2) works with dHub, and is designed to replicate the v1 functionality with minimal breaking changes. See [`UPGRADE.md`](https://github.com/dwebprotocol/ddrive-daemon-client/blob/master/UPGRADE.md) for more info.__
 
 ## Installation
 `npm i @ddrive/daemon-client --save`
 
 ## Usage
-This module provides both programmatic and CLI access to the [dDrive daemon](https://github.com/hyperdrive-daemon). For info about how to use the CLI, take a look at README in the daemon repo.
+This module provides both programmatic and CLI access to the [dDrive daemon](https://github.com/dwebprotocol/ddrive-daemon). For info about how to use the CLI, take a look at README in the daemon repo.
 
 Each client takes an optional gRPC endpoint and access token as constructor arguments:
 ```js
@@ -29,7 +29,7 @@ All dDrive API methods are accessed through `client.drive`, and all FUSE methods
 ## API
 The client exposes a gRPC interface for a) creating and interacting with remote dDrives and b) mounting dDrives as local directories using FUSE.
 
-Check out the [daemon tests](https://github.com/hyperdrive-daemon/blob/hyperdrive-api/test/hyperdrive.js) for more example usage.
+Check out the [daemon tests](https://github.com/ddrive-daemon/blog/ddrive-api/test/ddrive.js) for more example usage.
 
 ### dDrive
 The client's dDrive API is designed to mirror the methods in dDrive as closely as possible.
@@ -82,7 +82,7 @@ Options include:
 ```
 
 #### dDrive Methods
-The client currently only supports a subset of the dDrive API. We're actively working on extending this (targeting complete parity)! Each method's options mirror those in the [hyperdrive module](https://github.com/mafintosh/hyperdrive).
+The client currently only supports a subset of the dDrive API. We're actively working on extending this (targeting complete parity)! Each method's options mirror those in the [ddrive module](https://github.com/dwebprotocol/ddrive).
 
 Each method returns a Promise, but can optionally take a callback (to more accurately reflect the dDrive API).
 
@@ -149,7 +149,7 @@ This message will be delivered with best-effort, but if the remote peer is not s
 ##### `topicHandle.on('close', ...)`
 Emitted when the topic stream has closed.
 
-You can check out the internals in the [peersockets repo](https://github.com/peersockets).
+You can check out the internals in the [peersockets repo](https://github.com/dwebprotocol/peersockets).
 
 ### Peers
 `client.peers` allows you to get information about currently-connected peers.

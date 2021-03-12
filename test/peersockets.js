@@ -1,20 +1,20 @@
 const test = require('tape')
-const hypercoreCrypto = require('hypercore-crypto')
+const ddatabaseCrypto = require('@ddatabase/crypto')
 const { create } = require('./util/create')
 
 test('peersockets, unidirectional send one', async t => {
-  const { clients, hsClients, cleanup } = await create(2)
+  const { clients, dhClients, cleanup } = await create(2)
   const firstClient = clients[0]
   const secondClient = clients[1]
 
-  const secondKey = hsClients[1].network.keyPair.publicKey
+  const secondKey = dhClients[1].network.keyPair.publicKey
   let received = false
 
-  const sharedKey = hypercoreCrypto.randomBytes(32)
+  const sharedKey = ddatabaseCrypto.randomBytes(32)
 
   try {
-    await hsClients[0].network.configure(sharedKey, { lookup: true, announce: true })
-    await hsClients[1].network.configure(sharedKey, { lookup: false, announce: true })
+    await dhClients[0].network.configure(sharedKey, { lookup: true, announce: true })
+    await dhClients[1].network.configure(sharedKey, { lookup: false, announce: true })
 
     // 100 ms delay for swarming.
     await delay(100)
@@ -28,7 +28,7 @@ test('peersockets, unidirectional send one', async t => {
       }
     })
     const secondTopic = secondClient.peersockets.join('my-topic')
-    secondTopic.send('hello peersockets!', hsClients[1].network.peers[0])
+    secondTopic.send('hello peersockets!', dhClients[1].network.peers[0])
 
     // 100 ms delay for the message to be sent.
     await delay(100)
@@ -45,15 +45,15 @@ test('peersockets, unidirectional send one', async t => {
 })
 
 test('peersockets, unidirectional send many', async t => {
-  const { clients, hsClients, cleanup } = await create(2)
+  const { clients, dhClients, cleanup } = await create(2)
   const firstClient = clients[0]
   const secondClient = clients[1]
 
-  const secondKey = hsClients[1].network.keyPair.publicKey
-  const sharedKey = hypercoreCrypto.randomBytes(32)
+  const secondKey = dhClients[1].network.keyPair.publicKey
+  const sharedKey = ddatabaseCrypto.randomBytes(32)
 
-  await hsClients[0].network.configure(sharedKey, { announce: true, lookup: true })
-  await hsClients[1].network.configure(sharedKey, { announce: false, lookup: true })
+  await dhClients[0].network.configure(sharedKey, { announce: true, lookup: true })
+  await dhClients[1].network.configure(sharedKey, { announce: false, lookup: true })
 
   // 100 ms delay for discovery.
   await delay(100)
@@ -71,7 +71,7 @@ test('peersockets, unidirectional send many', async t => {
     })
     const secondTopic = secondClient.peersockets.join('my-topic')
     for (const msg of msgs) {
-      secondTopic.send(msg, hsClients[1].network.peers[0])
+      secondTopic.send(msg, dhClients[1].network.peers[0])
     }
 
     // 100 ms delay for the message to be send.
@@ -89,16 +89,16 @@ test('peersockets, unidirectional send many', async t => {
 })
 
 test('peersockets, bidirectional send one', async t => {
-  const { clients, hsClients, cleanup } = await create(2)
+  const { clients, dhClients, cleanup } = await create(2)
   const firstClient = clients[0]
   const secondClient = clients[1]
 
-  const firstKey = hsClients[0].network.keyPair.publicKey
-  const secondKey = hsClients[1].network.keyPair.publicKey
-  const sharedKey = hypercoreCrypto.randomBytes(32)
+  const firstKey = dhClients[0].network.keyPair.publicKey
+  const secondKey = dhClients[1].network.keyPair.publicKey
+  const sharedKey = ddatabaseCrypto.randomBytes(32)
 
-  await hsClients[0].network.configure(sharedKey, { announce: true, lookup: true })
-  await hsClients[1].network.configure(sharedKey, { announce: false, lookup: true })
+  await dhClients[0].network.configure(sharedKey, { announce: true, lookup: true })
+  await dhClients[1].network.configure(sharedKey, { announce: false, lookup: true })
 
   // 100 ms delay for discovery.
   await delay(100)
@@ -127,7 +127,7 @@ test('peersockets, bidirectional send one', async t => {
       }
     })
 
-    secondTopic.send(msg1, hsClients[1].network.peers[0])
+    secondTopic.send(msg1, dhClients[1].network.peers[0])
 
     // 100 ms delay for the message to be send.
     await delay(100)
@@ -145,16 +145,16 @@ test('peersockets, bidirectional send one', async t => {
 })
 
 test('peersockets, bidirectional send many', async t => {
-  const { clients, hsClients, cleanup } = await create(2)
+  const { clients, dhClients, cleanup } = await create(2)
   const firstClient = clients[0]
   const secondClient = clients[1]
 
-  const firstKey = hsClients[0].network.keyPair.publicKey
-  const secondKey = hsClients[1].network.keyPair.publicKey
-  const sharedKey = hypercoreCrypto.randomBytes(32)
+  const firstKey = dhClients[0].network.keyPair.publicKey
+  const secondKey = dhClients[1].network.keyPair.publicKey
+  const sharedKey = ddatabaseCrypto.randomBytes(32)
 
-  await hsClients[0].network.configure(sharedKey, { announce: true, lookup: true })
-  await hsClients[1].network.configure(sharedKey, { announce: false, lookup: true })
+  await dhClients[0].network.configure(sharedKey, { announce: true, lookup: true })
+  await dhClients[1].network.configure(sharedKey, { announce: false, lookup: true })
 
   // 100 ms delay for discovery.
   await delay(100)
@@ -180,7 +180,7 @@ test('peersockets, bidirectional send many', async t => {
     })
 
     for (const msg of firstMsgs) {
-      secondTopic.send(msg, hsClients[1].network.peers[0])
+      secondTopic.send(msg, dhClients[1].network.peers[0])
     }
 
     // 100 ms delay for the message to be send.
@@ -201,14 +201,14 @@ test('peersockets, bidirectional send many', async t => {
 test('peersockets, send to all peers swarming a drive, static peers', async t => {
   const NUM_PEERS = 10
 
-  const { clients, hsClients, cleanup } = await create(NUM_PEERS)
+  const { clients, dhClients, cleanup } = await create(NUM_PEERS)
   const firstClient = clients[0]
-  const firstRemoteKey = hsClients[0].network.keyPair.publicKey
-  const store = hsClients[0].corestore()
-  const sharedCore = store.get()
-  await sharedCore.ready()
+  const firstRemoteKey = dhClients[0].network.keyPair.publicKey
+  const store = dhClients[0].basestore()
+  const sharedBase = store.get()
+  await sharedBase.ready()
 
-  await hsClients[0].network.configure(sharedCore.discoveryKey, { announce: true, lookup: true })
+  await dhClients[0].network.configure(sharedBase.discoveryKey, { announce: true, lookup: true })
 
   const received = (new Array(NUM_PEERS - 1)).fill(0)
   const msgs = ['hello', 'world'].map(s => Buffer.from(s))
@@ -221,7 +221,7 @@ test('peersockets, send to all peers swarming a drive, static peers', async t =>
     const firstTopic = firstClient.peersockets.join('my-topic')
 
     // Start observing all peers that swarm the drive's discovery key.
-    const unwatch = await firstClient.peers.watchPeers(sharedCore.key, {
+    const unwatch = await firstClient.peers.watchPeers(sharedBase.key, {
       onjoin: (peer) => {
         receivers.push(peer)
       },
@@ -230,12 +230,12 @@ test('peersockets, send to all peers swarming a drive, static peers', async t =>
       }
     })
 
-    // Each receiver peers swarms the shared core and joins the topic.
+    // Each receiver peers swarms the shared base and joins the topic.
     for (let i = 1; i < NUM_PEERS; i++) {
-      const store = hsClients[i].corestore()
-      const core = store.get(sharedCore.key)
-      await core.ready()
-      await hsClients[i].network.configure(sharedCore.discoveryKey, { announce: false, lookup: true })
+      const store = dhClients[i].basestore()
+      const base = store.get(sharedBase.key)
+      await base.ready()
+      await dhClients[i].network.configure(sharedBase.discoveryKey, { announce: false, lookup: true })
       receiverTopics.push(clients[i].peersockets.join('my-topic', {
         onmessage: async (msg, peer) => {
           t.true(peer.remotePublicKey.equals(firstRemoteKey))
@@ -276,18 +276,18 @@ test('peersockets, send to all peers swarming a drive, static peers', async t =>
 test('peersockets, send to all peers swarming a drive, dynamically-added peers', async t => {
   const NUM_PEERS = 10
 
-  const { clients, hsClients, cleanup } = await create(NUM_PEERS)
+  const { clients, dhClients, cleanup } = await create(NUM_PEERS)
   const firstClient = clients[0]
-  const firstRemoteKey = hsClients[0].network.keyPair.publicKey
+  const firstRemoteKey = dhClients[0].network.keyPair.publicKey
 
   const received = (new Array(NUM_PEERS - 1)).fill(0)
   const firstMessage = Buffer.from('hello world')
 
   try {
-    const store = hsClients[0].corestore()
-    const sharedCore = store.get()
-    await sharedCore.ready()
-    await hsClients[0].network.configure(sharedCore.key, { announce: true, lookup: true })
+    const store = dhClients[0].basestore()
+    const sharedBase = store.get()
+    await sharedBase.ready()
+    await dhClients[0].network.configure(sharedBase.key, { announce: true, lookup: true })
     const receivers = []
     const receiverTopics = []
 
@@ -295,7 +295,7 @@ test('peersockets, send to all peers swarming a drive, dynamically-added peers',
     const firstTopic = firstClient.peersockets.join('my-topic')
 
     // Start observing all peers that swarm the drive's discovery key.
-    const unwatch = await firstClient.peers.watchPeers(sharedCore.key, {
+    const unwatch = await firstClient.peers.watchPeers(sharedBase.key, {
       onjoin: (peer) => {
         firstTopic.send(firstMessage, peer)
         receivers.push(peer)
@@ -308,9 +308,9 @@ test('peersockets, send to all peers swarming a drive, dynamically-added peers',
     // Each receiver peers swarms the drive and joins the topic.
     // Wait between each peer creation to test dynamic joins.
     for (let i = 1; i < NUM_PEERS; i++) {
-      const store = hsClients[i].corestore()
-      store.get(sharedCore.key)
-      await hsClients[i].network.configure(sharedCore.key, { announce: false, lookup: true })
+      const store = dhClients[i].basestore()
+      store.get(sharedBase.key)
+      await dhClients[i].network.configure(sharedBase.key, { announce: false, lookup: true })
       receiverTopics.push(clients[i].peersockets.join('my-topic', {
         onmessage: async (msg, peer) => {
           t.true(peer.remotePublicKey.equals(firstRemoteKey))
@@ -339,19 +339,19 @@ test('peersockets, send to all peers swarming a drive, dynamically-added peers',
 
 // This test is no longer valid (the user should explicitly leave the topic now).
 test.skip('closing the last topic handle closes the topic', async t => {
-  const { clients, hsClients, cleanup } = await create(2)
+  const { clients, dhClients, cleanup } = await create(2)
   const firstClient = clients[0]
   const secondClient = clients[1]
 
   const firstPeersockets = clients[0].peersockets
-  const secondKey = hsClients[1].network.keyPair.publicKey
+  const secondKey = dhClients[1].network.keyPair.publicKey
   let received = false
 
-  const sharedKey = hypercoreCrypto.randomBytes(32)
+  const sharedKey = ddatabaseCrypto.randomBytes(32)
 
   try {
-    await hsClients[0].network.configure(sharedKey, { announce: true, lookup: true })
-    await hsClients[1].network.configure(sharedKey, { announce: false, lookup: true })
+    await dhClients[0].network.configure(sharedKey, { announce: true, lookup: true })
+    await dhClients[1].network.configure(sharedKey, { announce: false, lookup: true })
 
     // 100 ms delay for swarming.
     await delay(100)
@@ -365,7 +365,7 @@ test.skip('closing the last topic handle closes the topic', async t => {
       }
     })
     const secondTopic = secondClient.peersockets.join('my-topic')
-    secondTopic.send('hello peersockets!', hsClients[1].network.peers[0])
+    secondTopic.send('hello peersockets!', dhClients[1].network.peers[0])
 
     // 100 ms delay for the message to be sent.
     await delay(100)

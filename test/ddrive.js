@@ -3,7 +3,7 @@ const test = require('tape')
 const collectStream = require('stream-collector')
 const { createOne } = require('./util/create')
 
-test('can write/read a file from a remote hyperdrive', async t => {
+test('can write/read a file from a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -24,7 +24,7 @@ test('can write/read a file from a remote hyperdrive', async t => {
   t.end()
 })
 
-test('can write/read a large file from a remote hyperdrive', async t => {
+test('can write/read a large file from a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   const content = Buffer.alloc(3.9e7).fill('abcdefghi')
@@ -137,7 +137,7 @@ test('can delete metadata', async t => {
   t.end()
 })
 
-test('can write/read a file from a remote hyperdrive using stream methods', async t => {
+test('can write/read a file from a remote ddrive using stream methods', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -268,7 +268,7 @@ test('reading an invalid file propogates error', async t => {
   t.end()
 })
 
-test('can stat a file from a remote hyperdrive', async t => {
+test('can stat a file from a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -290,7 +290,7 @@ test('can stat a file from a remote hyperdrive', async t => {
   t.end()
 })
 
-test('can list a directory from a remote hyperdrive', async t => {
+test('can list a directory from a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -315,7 +315,7 @@ test('can list a directory from a remote hyperdrive', async t => {
   t.end()
 })
 
-test('can list a directory from a remote hyperdrive with stats', async t => {
+test('can list a directory from a remote ddrive with stats', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -345,7 +345,7 @@ test('can list a directory from a remote hyperdrive with stats', async t => {
   t.end()
 })
 
-test('can list a large directory from a remote hyperdrive with stats', async t => {
+test('can list a large directory from a remote ddrive with stats', async t => {
   const { client, cleanup } = await createOne()
   const NUM_FILES = 5000
   const PARALLEL_WRITE = true
@@ -381,7 +381,7 @@ test('can list a large directory from a remote hyperdrive with stats', async t =
   t.end()
 })
 
-test('can create a diff stream on a remote hyperdrive', async t => {
+test('can create a diff stream on a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -451,7 +451,7 @@ test('can create a diff stream on a remote hyperdrive', async t => {
   }
 })
 
-test('can read/write multiple remote hyperdrives on one server', async t => {
+test('can read/write multiple remote dDrives on one server', async t => {
   const { client, cleanup } = await createOne()
   const files = [
     ['hello', 'world'],
@@ -481,7 +481,7 @@ test('can read/write multiple remote hyperdrives on one server', async t => {
   t.end()
 })
 
-test('can mount a drive within a remote hyperdrive', async t => {
+test('can mount a drive within a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -512,7 +512,7 @@ test('can mount a drive within a remote hyperdrive', async t => {
   t.end()
 })
 
-test('can mount a drive within a remote hyperdrive multiple times', async t => {
+test('can mount a drive within a remote ddrive multiple times', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -536,7 +536,7 @@ test('can mount a drive within a remote hyperdrive multiple times', async t => {
   t.end()
 })
 
-test('can mount a versioned drive within a remote hyperdrive', async t => {
+test('can mount a versioned drive within a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -575,7 +575,7 @@ test('can mount a versioned drive within a remote hyperdrive', async t => {
   t.end()
 })
 
-test('can unmount a drive within a remote hyperdrive', async t => {
+test('can unmount a drive within a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   try {
@@ -613,7 +613,7 @@ test('can unmount a drive within a remote hyperdrive', async t => {
   t.end()
 })
 
-test('can watch a remote hyperdrive', async t => {
+test('can watch a remote ddrive', async t => {
   const { client, cleanup } = await createOne()
 
   var triggered = 0
@@ -809,7 +809,7 @@ test.skip('drives are writable after a daemon restart', async t => {
 })
 
 // Test is no longer relevant.
-test.skip('cores are not closed incorrectly during the initial rejoin', async t => {
+test.skip('bases are not closed incorrectly during the initial rejoin', async t => {
   var { dir, client, cleanup } = await createOne()
 
   try {

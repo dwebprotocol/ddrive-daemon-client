@@ -1,13 +1,13 @@
-const { createMany: hsCreateMany } = require('hyperspace/test/helpers/create')
+const { createMany: hsCreateMany } = require('dhub/test/helpers/create')
 
-const HyperdriveClient = require('../..')
+const DDriveClient = require('../..')
 
 async function create (numServers, opts) {
   const { servers: daemons, clients, dirs, cleanup } = await hsCreateMany(numServers, opts)
   const driveClients = clients.map(c => {
-    return new HyperdriveClient({ client: c })
+    return new DDriveClient({ client: c })
   })
-  return { hsClients: clients, clients: driveClients, daemons, cleanup, dirs }
+  return { dhClients: clients, clients: driveClients, daemons, cleanup, dirs }
 }
 
 async function createOne (opts) {

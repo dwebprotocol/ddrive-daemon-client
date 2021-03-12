@@ -1,16 +1,16 @@
 const { NanoresourcePromise: Nanoresource } = require('nanoresource-promise/emitter')
-const HyperspaceClient = require('hyperspace/client')
-const Peersockets = require('peersockets')
+const DHubClient = require('@dhub/client')
+const Peersockets = require('dweb-peersockets')
 
 const DriveClient = require('./lib/clients/drive')
 const PeersClient = require('./lib/clients/peers')
 
-class HyperdriveClient extends Nanoresource {
+class DDriveClient extends Nanoresource {
   constructor (opts = {}) {
     super()
     this.opts = opts
 
-    this._client = opts.client || new HyperspaceClient({
+    this._client = opts.client || new DHubClient({
       host: this.opts.host || this.opts.endpoint,
       ...this.opts
     })
@@ -37,4 +37,4 @@ class HyperdriveClient extends Nanoresource {
   }
 }
 
-module.exports = HyperdriveClient
+module.exports = DDriveClient

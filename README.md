@@ -117,7 +117,7 @@ All FUSE commands can be found on the `client.fuse` object.
 ##### `client.fuse.mount(mnt, opts, cb)`
 Mount either the root drive (if `/mnt` is not specified), or a subdirectory within the root drive.
 - `mnt`: The mountpoint of the drive (currently enforced to be `~/DDrive` if it's the root drive, and a subdirectory within `~/DDrive` otherwise.
-- `opts`: Hyperdrive mount options (identical to those in dDrive).
+- `opts`: DDrive mount options (identical to those in dDrive).
 
 ##### `client.fuse.unmount(mnt, cb)`
 Unmounts either a subdrive, or the root drive if `mnt` is not specified.

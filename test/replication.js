@@ -88,12 +88,12 @@ test('can download a directory between daemons', async t => {
     const d2Stats1 = await drive2.stats()
     stats = d2Stats1.stats
 
-    // TODO: Uncomment after hypercore bug fix.
+    // TODO: Uncomment after dDatabase bug fix.
     // t.same(stats[0].content.downloadedBlocks, 0)
 
     var fileStats = await drive2.fileStats('/a/1')
 
-    // TODO: Uncomment after hypercore bug fix.
+    // TODO: Uncomment after dDatabase bug fix.
     // t.same(fileStats.get('/a/1').downloadedBlocks, 0)
 
     await drive2.download('a')
@@ -135,7 +135,7 @@ test('can cancel an active download', async t => {
     await writeFile(drive1, '/a/2', 10)
 
     var fileStats = await drive2.fileStats('/a/1')
-    // TODO: Uncomment after hypercore bug fix
+    // TODO: Uncomment after dDatabase bug fix
     // t.same(fileStats.downloadedBlocks, 0)
 
     const handle = await drive2.download('a')
@@ -293,7 +293,7 @@ test('can get networking stats for multiple mounts', async t => {
     const secondStats = await firstClient.drive.allStats()
     t.same(secondStats.length, 3)
 
-    // TODO: Enable once hypercore stats are propagated to RemoteHypercores
+    // TODO: Enable once hypercore stats are propagated to RemoteDDatabases
     /*
     var uploadedBytes = null
     for (const mountStats of secondStats) {
@@ -315,7 +315,7 @@ test('can get networking stats for multiple mounts', async t => {
   t.end()
 })
 
-test('no-announce mode prevents discovery for read-only hyperdrives', async t => {
+test('no-announce mode prevents discovery for read-only dDrives', async t => {
   const { clients, daemons, cleanup } = await create(3, [null, { noAnnounce: true }, { noAnnounce: true }])
   const firstClient = clients[0]
   const secondClient = clients[1]
@@ -561,7 +561,7 @@ test('can continue getting drive info after remote content is cleared (no longer
   const firstClient = clients[0]
   const secondClient = clients[1]
 
-  const localStore = daemons[0].corestore
+  const localStore = daemons[0].basestore
 
   try {
     const drive = await firstClient.drive.get()
@@ -586,10 +586,10 @@ test('can continue getting drive info after remote content is cleared (no longer
 
   async function clearContent (metadataKeys, store) {
     const metadataKeySet = new Set(metadataKeys.map(k => k.toString('hex')))
-    for (const [, core] of store.list()) {
-      if (metadataKeySet.has(core.key.toString('hex'))) continue
+    for (const [, base] of store.list()) {
+      if (metadataKeySet.has(base.key.toString('hex'))) continue
       await new Promise((resolve, reject) => {
-        core.clear(0, core.length, err => {
+        base.clear(0, base.length, err => {
           if (err) return reject(err)
           return resolve()
         })

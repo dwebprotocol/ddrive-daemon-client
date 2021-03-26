@@ -107,7 +107,7 @@ Method arguments take the same form as those in dDrive. The following methods ar
 17. `drive.updateMetadata(path, metadata, cb(err))`
 18. `drive.deleteMetadata(path, metadata, cb(err))`
 19. `drive.fileStats(name, cb(err, stats))`
-20. `drive.checkout(version)` // Returns a new `RemoteHyperdrive` instance for the checkout.
+20. `drive.checkout(version)` // Returns a new `RemoteDDrive` instance for the checkout.
 
 ### FUSE
 The client library also provides programmatic access to the daemon's FUSE interface.

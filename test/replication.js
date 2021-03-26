@@ -293,7 +293,7 @@ test('can get networking stats for multiple mounts', async t => {
     const secondStats = await firstClient.drive.allStats()
     t.same(secondStats.length, 3)
 
-    // TODO: Enable once hypercore stats are propagated to RemoteDDatabases
+    // TODO: Enable once ddatabase stats are propagated to RemoteDDatabases
     /*
     var uploadedBytes = null
     for (const mountStats of secondStats) {

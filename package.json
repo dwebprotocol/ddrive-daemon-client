@@ -1,6 +1,6 @@
 {
   "name": "@ddrive/daemon-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A client library and CLI tool for interacting with the dDrive daemon.",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "ddrive": "^5.0.0",
     "@ddrive/network-heuristics": "^1.0.0",
     "@ddrive/schemas": "^1.0.0",
-    "dhub": "^1.0.0",
+    "dhub": "^1.0.6",
     "last-one-wins": "^1.0.4",
     "mirror-folder": "^3.0.1",
     "nanoresource-promise": "^1.2.2",
